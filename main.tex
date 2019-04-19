@@ -1,0 +1,147 @@
+\documentclass[a4 paper]{article}
+% Set target color model to RGB
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage[rgb]{xcolor}
+\usepackage{verbatim}
+\usepackage{subcaption}
+\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,tikz,amssymb,tkz-linknodes}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true, urlcolor=blue,  linkcolor=blue, citecolor=blue]{hyperref}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{rotating}
+\usepackage{hyperref}   % link web
+%\usetikzlibrary{through,backgrounds}
+\hypersetup{%
+pdfauthor={Matteo Azzarelli},%
+pdftitle={Homework},%
+pdfkeywords={latex, Auditing},%
+pdfcreator={PDFLaTeX},%
+pdfproducer={PDFLaTeX},%
+}
+%\usetikzlibrary{shadows}
+\usepackage{booktabs}
+\input{macros.tex}
+
+\usepackage{amsmath}
+
+
+
+
+\begin{document}
+\homework{Assignment 1}{Due: 24 Mar 2019}{Prof CHEUNG Yiu Ming}{}{Matteo Azzarelli}{18432468}
+
+\problem{Question 1}{}
+\subproblem{a}
+      In order to find the size of the state space we should consider that in this problem is allowed go backward, so, that it means is possible have loops.
+      The blank tile can be in every positions (7), the white tiles can be in every remaining space, so, is the combination of 3 element of 6 $$C(6,3)= \frac{n!}{r!(n-r)!}=\frac{6!}{3!(6-3)!}=\frac{6!}{3!3!}=\frac{6\cdot 5\cdot 4\cdot 3\cdot 2}{3\cdot 2\cdot 3\cdot 2}= 5\cdot 4$$
+      At this time we have $7 \cdot5 \cdot 4$ and the remaining 3 black tiles are forced in the remaining space, so we have a total of $$7 \cdot5 \cdot 4 = 140$$ different states.
+      
+\subproblem{b}
+    One heuristic function h for solve this problem is h = "count number of white tiles on the right side of black tiles".
+    This heuristic is admissible because the estimated cost of the cheapest solution through n, where $f(n) = g(n) + h(n)$, never overestimate the actual cost of the best solution. g(n) is the path cost from the start node to the node n and h(n) is the estimated cost of the cheapest path from n to the goal.
+    
+    In addition, h is also monotonic because if n and n' are two nodes where n is the parent of n', it follow $f(n) \leq f(n')$.
+      
+\newpage
+\problem{Question 2}{}
+
+\\
+\vspace{22cm}The path with the lower costs is:
+$$S \longrightarrow A \longrightarrow B \longrightarrow C \longrightarrow G , 12.4$$
+\newpage
+\problem{Question 3}{}
+
+\subproblem{a}
+    Convert to predicate logic:
+\begin{flalign*}
+    &1) \; \forall x \; Pass(x, History) \wedge Win(x, Lottery) \Rightarrow Happy(x)\\
+    &2) \; \forall x \forall y \; Study(x) \lor Lucky(x) \Rightarrow Pass(x, y)\\
+    &3) \; \lnot Study(Jhon) \wedge Lucky(Jhon)\\
+    &4) \; \forall x \; Lucky(x) \Rightarrow Win(x, Lottery)
+\end{flalign*}
+
+Convert to CNF, eliminate implications:
+\begin{flalign*}
+    &1) \; \forall x \; \lnot(Pass(x, History) \wedge Win(x, Lottery)) \lor Happy(x)\\
+    &2) \; \forall x \forall y \; \lnot(Study(x) \lor Lucky(x)) \lor Pass(x, y)\\
+    &3) \; \lnot Study(Jhon) \wedge Lucky(Jhon)\\
+    &4) \; \forall x \; \lnot Lucky(x) \lor Win(x, Lottery)
+\end{flalign*}
+
+Next step, Move \lnor inward:
+\begin{flalign*}
+    &1) \; \forall x \; (\lnot Pass(x, History) \lor \lnot Win(x, Lottery)) \lor Happy(x)\\
+    &2) \; \forall x \forall y \; (\lnot Study(x) \wedge \lnot Lucky(x)) \lor Pass(x, y)\\
+    &3) \; \lnot Study(Jhon) \wedge Lucky(Jhon)\\
+    &4) \; \forall x \; \lnot Lucky(x) \lor Win(x, Lottery)
+\end{flalign*}
+
+Next, drop the qualifiers:
+\begin{flalign*}
+    &1) \; (\lnot Pass(x, History) \lor \lnot Win(x, Lottery)) \lor Happy(x)\\
+    &2) \; (\lnot Study(x) \lor Pass(x, y)) \wedge (\lnot Lucky(x) \lor Pass(x, y))\\
+    &3) \; \lnot Study(Jhon) \wedge Lucky(Jhon)\\
+    &4) \; \lnot Lucky(x) \lor Win(x, Lottery)
+\end{flalign*}
+
+Now we can separate the litterals:
+\begin{flalign*}
+    &1) \; (\lnot Pass(x, History) \lor \lnot Win(x, Lottery)) \lor Happy(x)\\
+    &2.a) \; \lnot Study(x) \lor Pass(x, y)\\
+    &2.b) \; \lnot Lucky(x) \lor Pass(x, y)\\
+    &3.a) \; \lnot Study(Jhon)\\
+    &3.b) \; Lucky(Jhon)\\
+    &4) \; \lnot Lucky(x) \lor Win(x, Lottery)
+\end{flalign*}
+            
+Transform in INF:
+\begin{flalign*}
+    &1) \; \forall x \; \lnot(Pass(x, History) \wedge Win(x, Lottery)) \lor Happy(x)\\
+    &2.a) \; Study(x) \Rightarrow Pass(x, y)\\
+    &2.b) \; Lucky(x) \Rightarrow Pass(x, y)\\
+    &3.a) \; Study(Jhon) \Rightarrow FALSE\\
+    &3.b) \; TRUE \Rightarrow Lucky(Jhon)\\
+    &4) \; Lucky(x) \Rightarrow Win(x, Lottery)
+\end{flalign*}
+
+\newpage
+\subproblem{b}
+    Proof by resolution refutation or contradiction:
+    the goal is proof $Happy(John)$, so we add the clause $\lnot Happy(John)$ and we aspect the result False in order to proof our goal.
+\vspace{20cm}
+
+
+\problem{Question 4}{}
+Can't be any consistent hypothesis for any set of positive training examples because the precision could be different, in particular there could be another decimal digit and this make it impossible.
+
+A possible way to solve this problem could be set a limit for the maximum number of decimals in the hypothesis language.
+
+\problem{Question 5}{}
+\begin{flalign*}
+S_{0} &= \left \{<\varnothing, \varnothing, \varnothing > \right \}\\
+G_{0} &= \left \{<?,?,?> \right \}\\
+\\
+S_{1} &=\left \{<bad, high, none> \right \}\\
+G_{1} &= \left \{<?,?,?> \right \}\\
+\\
+S_{2} &= \left \{<bad, high, none> \right \}\\
+G_{2} &= \left \{<bad,?,?>,<?,high,?> \right \}\\
+\\
+S_{3} &= \left \{<bad, high, none> \right \}\\
+G_{3} &= \left \{<bad,low,?>,<bad,?,none>,<?,high,?><?,?,none> \right \}\\
+\\
+S_{3} &= \left \{<bad, high, none> \right \}\\
+G_{3} &= \left \{<bad,low,?>,<bad,?,none>,<?,high,?><?,?,none> \right \}\\
+\\
+S_{4} &= \left \{<?, high, none> \right \}\\
+G_{4} &= \left \{<?,high,?><?,?,none> \right \}\\
+\end{flalign*}
+
+$$S_{4} = \left \{<?, high, none> \right \}$$
+\vspace{3cm}
+$$G_{4} = \left \{<?,high,?><?,?,none> \right \}$$
+
+\end{document} 
+
+
